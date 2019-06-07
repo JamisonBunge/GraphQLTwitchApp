@@ -13,5 +13,11 @@ class Streams extends RESTDataSource {
         var result = await this.get("https://api.twitch.tv/helix/streams?first=20")
         return result.data
     }
+    async getStream(login) {
+        var result = await this.get("https://api.twitch.tv/helix/streams?user_login=" + login)
+        console.log(result)
+        console.log(login)
+        return result.data[0]
+    }
 }
 module.exports = Streams

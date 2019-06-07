@@ -2,13 +2,19 @@ const { ApolloServer, gql } = require('apollo-server');
 const { find, filter } = require('lodash');
 const Streams = require('./DataSources/Streams');
 const User = require('./DataSources/User');
+const Game = require('./DataSources/Game');
+const Page = require('./DataSources/Page');
+const Links = require('./DataSources/Links');
 
-
+//the div we care about to get twitch discription on stream is class="channel-panels",
+//below that on the dom there should be another div-> a tag which has the href
 
 // The GraphQL schema
 //typeDef : string representing the graphql schema
 //gql : a template literal tag used for wraching graphql inside javascript
 
+//NOTE: stream call is giving null when not live
+//NOTE: need to change how streams makes nested calls -> they should be batched
 
 //to include in the schema: Streams Game, User
 const schema = gql`
@@ -18,7 +24,15 @@ const schema = gql`
     display_name: String,
     profile_image_url: String,
     view_count: String,
-    broadcaster_type: String
+    broadcaster_type: String,
+    stream: Stream
+  }, #link -> channel pannel links
+  type Links { #lets build on links first which will be an array of pannel links, later i can add twitter ect,
+    links: [String]
+    # twitter_link: String,
+    # twitter_user_name: String,
+    # twitter: relay to twitter scehma
+    #there may be more than on twitter linked, need to devise a way to pick the most similar
   },
   type Stream {
     user_name: String,
@@ -28,20 +42,41 @@ const schema = gql`
      game_id: String,
      id: String,
      started_at: String,
-     thumbnail_url: String
+     thumbnail_url: String,
+     game: Game,
+     user: User
      # game: Game #  this needs to make another call to the twitch api
      },
+  type Game {
+    box_art_url: String,
+    id: String,
+    name: String
+  }
   type Query {
     "A simple type for getting started!"
     user(login: String!): User,
-    streams: [Stream]
+    streams: [Stream],
+    stream(login: String!): Stream,
+    game(id: String!): Game,
+    # ==========
+    links(login: String!): Links
   }
 `;
 
 const resolvers = {
   Query: {
     user: async (_parent, { login }, { dataSources }) => dataSources.User.getUser(login),
-    streams: async (_parent, _args, { dataSources }) => dataSources.Streams.getStreams()
+    streams: async (_parent, _args, { dataSources }) => dataSources.Streams.getStreams(),
+    stream: async (_parent, { login }, { dataSources }) => dataSources.Streams.getStream(login),
+    game: async (_parent, { id }, { dataSources }) => dataSources.Game.getGame(id),
+    links: async (_parent, { login }, { dataSources }) => dataSources.Links.getLinks(login)
+  },
+  Stream: {
+    game: async (parent, { id }, { dataSources }) => dataSources.Game.getGame(parent.game_id),
+    user: async (parent, { login }, { dataSources }) => dataSources.User.getUserr(parent.user_id),
+  },
+  User: {
+    stream: async (parent, { login }, { dataSources }) => dataSources.Streams.getStream(parent.display_name),
   }
 };
 
@@ -51,7 +86,10 @@ const server = new ApolloServer({
   resolvers,
   dataSources: () => ({
     Streams: new Streams,
-    User: new User
+    User: new User,
+    Game: new Game,
+    Page: new Page,
+    Links: new Links
   })
 });
 

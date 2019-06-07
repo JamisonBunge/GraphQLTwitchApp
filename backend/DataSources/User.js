@@ -12,5 +12,11 @@ class User extends RESTDataSource {
         var result = await this.get("https://api.twitch.tv/helix/users?login=" + login)
         return result.data[0];
     }
+    async getUserr(id) {
+        var result = await this.get("https://api.twitch.tv/helix/users?id=" + id)
+        console.log(id)
+        console.log(result.data[0])
+        return result.data[0];
+    }
 }
 module.exports = User
