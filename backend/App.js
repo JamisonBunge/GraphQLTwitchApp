@@ -6,6 +6,10 @@ const Game = require('./DataSources/Game');
 const Page = require('./DataSources/Page');
 const Links = require('./DataSources/Links');
 
+
+//BIG BUG: using login doesnt always work.. "display name: riot games = riotgames as the login" <- need to figure out how spaces are handled(maybe jsut ignored for the login...)
+//if thats the case we can just ignore any spaces in the login feild and then this should be fine
+
 //the div we care about to get twitch discription on stream is class="channel-panels",
 //below that on the dom there should be another div-> a tag which has the href
 
@@ -28,7 +32,11 @@ const schema = gql`
     stream: Stream
   }, #link -> channel pannel links
   type Links { #lets build on links first which will be an array of pannel links, later i can add twitter ect,
-    links: [String]
+    links: [String],
+    httpLinks: [String],
+    allLinks: [String]
+    twitter_user_name: [String],
+    instagram_user_name: [String]
     # twitter_link: String,
     # twitter_user_name: String,
     # twitter: relay to twitter scehma
@@ -59,7 +67,7 @@ const schema = gql`
     stream(login: String!): Stream,
     game(id: String!): Game,
     # ==========
-    links(login: String!): Links
+    channel(login: String!): Links
   }
 `;
 
@@ -69,7 +77,7 @@ const resolvers = {
     streams: async (_parent, _args, { dataSources }) => dataSources.Streams.getStreams(),
     stream: async (_parent, { login }, { dataSources }) => dataSources.Streams.getStream(login),
     game: async (_parent, { id }, { dataSources }) => dataSources.Game.getGame(id),
-    links: async (_parent, { login }, { dataSources }) => dataSources.Links.getLinks(login)
+    channel: async (_parent, { login }, { dataSources }) => dataSources.Links.getLinks(login)
   },
   Stream: {
     game: async (parent, { id }, { dataSources }) => dataSources.Game.getGame(parent.game_id),
