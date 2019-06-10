@@ -29,17 +29,19 @@ const schema = gql`
     profile_image_url: String,
     view_count: String,
     broadcaster_type: String,
-    stream: Stream
+    stream: Stream,
+    links: Links
   }, #link -> channel pannel links
   type Links { #lets build on links first which will be an array of pannel links, later i can add twitter ect,
     links: [String],
     httpLinks: [String],
     allLinks: [String]
     twitter_user_name: [String],
-    instagram_user_name: [String]
+    instagram_user_name: [String],
+    user_name: String
     # twitter_link: String,
     # twitter_user_name: String,
-    # twitter: relay to twitter scehma
+    # twitter: relay to twitter gql
     #there may be more than on twitter linked, need to devise a way to pick the most similar
   },
   type Stream {
@@ -52,7 +54,8 @@ const schema = gql`
      started_at: String,
      thumbnail_url: String,
      game: Game,
-     user: User
+     user: User,
+     user_id: String
      # game: Game #  this needs to make another call to the twitch api
      },
   type Game {
@@ -85,6 +88,7 @@ const resolvers = {
   },
   User: {
     stream: async (parent, { login }, { dataSources }) => dataSources.Streams.getStream(parent.display_name),
+    links: async (parent, { login }, { dataSources }) => dataSources.Links.getLinks(parent.display_name)
   }
 };
 

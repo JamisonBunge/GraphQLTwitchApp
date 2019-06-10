@@ -74,7 +74,7 @@ class Links extends RESTDataSource {
             }
             user_name_list[site] = arraytopush;
         }
-        return { "allLinks": allLinks, "links": links, "httpLinks": httpLinks, "twitter_user_name": user_name_list[0], "instagram_user_name": user_name_list[1] }
+        return { "user_name": user_name, "allLinks": allLinks, "links": links, "httpLinks": httpLinks, "twitter_user_name": user_name_list[0], "instagram_user_name": user_name_list[1] }
     }
 }
 module.exports = Links
