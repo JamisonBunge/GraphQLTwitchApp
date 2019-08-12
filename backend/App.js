@@ -71,6 +71,7 @@ const schema = gql`
     game(id: String!): Game,
     # ==========
     channel(login: String!): Links
+
   }
 `;
 
@@ -129,3 +130,28 @@ server.listen().then(({ url }) => {
 //   { id: "3", name: "Tuner Tofo", username: "Tfue", game: "Fortnite" }
 // ]
 //
+
+
+// query {
+//   user(login: "ninja") {
+//     description
+//     view_count
+//     stream {
+//       title 
+//       viewer_count
+//       game {
+//         name
+//         url
+//       }
+//     }
+//     twitter{
+//       recent_tweets
+//       link
+//     }
+//     instagram {
+//       link
+//     }
+//   }
+// }
+
+  
