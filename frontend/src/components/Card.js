@@ -1,5 +1,8 @@
 
 import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
+import { userQuery } from '../queries/queries'
+
 
 
 class Card extends Component {
@@ -22,20 +25,14 @@ class Card extends Component {
     }
 
     displayLinks() {
+        var data = this.props.data;
+        console.log(data)
+        if (data.loading || data.books == undefined) {
+            return <div>...</div>
+        } else {
+            return <div>{this.props.data}</div>
+        }
 
-        return (this.state.test.map((e) => <li key={this.state.test.length}>{e}</li>))
-
-
-
-
-        // return data.books.map(book => {
-        //     //map cycles through the array,
-        //     //each time it hits it trigger this funciton
-        //     //it takes that book, grabs the name and places it inside an li tag
-        //     return (
-        //         <li key={book.id} onClick={e => this.setState({ selected: book.id })}> {book.name} </li>
-        //     )
-        // })
     }
 
     render() {
@@ -50,7 +47,7 @@ class Card extends Component {
                 </form>
                 <div className="list">
                     <ul id="book-list">
-                        {this.displayLinks}
+                        {this.displayLinks()}
                     </ul>
                 </div>
             </div>
@@ -59,4 +56,13 @@ class Card extends Component {
     }
 }
 
-export default Card
+export default graphql(userQuery, {
+    options: (props) => {
+        //console.log("+++++++++" +props.bookId)
+        return {
+            variables: {
+                login: this.state.username
+            }
+        }
+    }
+})(Card)
