@@ -8,6 +8,7 @@ const userQuery = gql`
                 twitter_user_name
                 instagram_user_name
             }
+
         }
     }`
 

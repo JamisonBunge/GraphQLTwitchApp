@@ -9,14 +9,20 @@ class Details extends Component {
 
     listLinks() {
         var data = this.props.data.user;
-
+        console.log(this.props)
         if (this.props.login === "NO_INPUT") return
+        if (data == undefined) return
 
         if (data.loading || data == undefined) {
             return <div>Loading</div>
         } else {
-            
-            return (Object.entries(data.links).map(([key, value]) => <li>{key} -> {value}</li >))
+
+            return (Object.entries(data.links).map(([key, value]) => {
+                if (key === "twitter_user_name") return <li>Twitter Username: {value}</li>
+                else if (key === "instagram_user_name") return <li>Instagram Username: {value}</li>
+                else return
+
+            }))
         }
     }
 

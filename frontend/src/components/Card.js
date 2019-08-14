@@ -16,7 +16,21 @@ class Card extends Component {
     submitForm(e) {
 
         e.preventDefault();
-        return this.setState({ login: this.refs.streamer.value })
+
+        let un = this.refs.streamer.value;
+        un = un.split(' ').join('') //remove all whitespace
+
+        for (let ch of un.split('')) {
+            if (ch.charCodeAt() < 48 || ch.charCodeAt() > 122) {
+                alert("Twitch usernames do not contain special characters");
+                this.refs.streamer.value = ""
+                return;
+            }
+            console.log(ch.charCodeAt())
+        }
+
+
+        return this.setState({ login: un })
     }
 
     render() {
