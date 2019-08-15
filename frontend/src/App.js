@@ -10,10 +10,12 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <div id="main">
-        <h1>Twitch Profile Scraper</h1>
-        <Card />
+    <ApolloProvider id="test" client={client}>
+      <div id="wrapper">
+        <div id="main">
+          <h1>Twitch Streamer Trading Cards</h1>
+          <Card />
+        </div>
       </div>
     </ApolloProvider>
   );

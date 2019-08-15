@@ -28,7 +28,12 @@ class Details extends Component {
 
     render() {
         return (
-            <div><ul>{this.listLinks()}</ul></div>
+            <div id="details">
+                <ul>{this.listLinks()}</ul>
+                <div>
+                    <h2>Ninja</h2>
+                </div>
+            </div>
         );
     }
 }

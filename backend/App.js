@@ -9,6 +9,7 @@ const Links = require('./DataSources/Links');
 
 //BIG BUG: using login doesnt always work.. "display name: riot games = riotgames as the login" <- need to figure out how spaces are handled(maybe jsut ignored for the login...)
 //if thats the case we can just ignore any spaces in the login feild and then this should be fine
+//fixed
 
 //the div we care about to get twitch discription on stream is class="channel-panels",
 //below that on the dom there should be another div-> a tag which has the href
@@ -137,7 +138,7 @@ server.listen().then(({ url }) => {
 //     description
 //     view_count
 //     stream {
-//       title 
+//       title
 //       viewer_count
 //       game {
 //         name
@@ -153,5 +154,3 @@ server.listen().then(({ url }) => {
 //     }
 //   }
 // }
-
-  
