@@ -17,10 +17,15 @@ class User extends RESTDataSource {
         }
     }
     async getUserr(id) {
-        var result = await this.get("https://api.twitch.tv/helix/users?id=" + id)
-        console.log(id)
-        console.log(result.data[0])
-        return result.data[0];
+        try {
+            var result = await this.get("https://api.twitch.tv/helix/users?id=" + id)
+            console.log(id)
+            console.log(result.data[0])
+            return result.data[0];
+        } catch {
+            return { "id": "", "description": "", "display_name": "", "profile_image_url": "", "view_count": "", "broadcaster_type": "", "stream": "", "links": "" }
+        }
+
     }
 }
 module.exports = User

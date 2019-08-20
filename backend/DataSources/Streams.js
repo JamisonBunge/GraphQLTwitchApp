@@ -17,7 +17,8 @@ class Streams extends RESTDataSource {
         var result = await this.get("https://api.twitch.tv/helix/streams?user_login=" + login)
         console.log(result)
         console.log(login)
-        return result.data[0]
+        if (result.data[0] != null) return result.data[0]
+        return { "user_name": "", "type": "offline", "title": "", "viewer_count": "", "game_id": "", "id": "", "started_at": "", "thumbnail_url": "", "user_id": "" }
     }
 }
 module.exports = Streams

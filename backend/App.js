@@ -46,7 +46,7 @@ const schema = gql`
     #there may be more than on twitter linked, need to devise a way to pick the most similar
   },
   type Stream {
-    user_name: String,
+     user_name: String,
      type: String,
      title: String,
      viewer_count: String,

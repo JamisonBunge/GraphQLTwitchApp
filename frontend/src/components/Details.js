@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
-import { userQuery } from '../queries/queries'
+import { userQuery, tradingCardQuery } from '../queries/queries'
 
 class Details extends Component {
     constructor(props) {
@@ -38,7 +38,7 @@ class Details extends Component {
     }
 }
 
-export default graphql(userQuery, {
+export default graphql(tradingCardQuery, {
     options: (props) => {
         console.log(props.login)
         return {

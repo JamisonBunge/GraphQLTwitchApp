@@ -11,7 +11,8 @@ class Game extends RESTDataSource {
     async getGame(id) {
         var result = await this.get("https://api.twitch.tv/helix/games?id=" + id)
         console.log(result.data)
-        return result.data[0];
+        if (result.data[0] != null) return result.data[0];
+        return { box_art_url: "", "id": "", "name": "" }
     }
 }
 module.exports = Game
